@@ -3,7 +3,7 @@
 require 'date'
 require 'etc'
 require 'rollbar'
-require 'syslog/logger'
+require 'syslog'
 require 'yaml'
 
 APPORT_LOCATION = '/usr/share/apport/apport'.freeze
