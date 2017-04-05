@@ -62,7 +62,7 @@ class CoreToRollbar
     Rollbar.configure do |config|
       config.access_token = @config['access_token']
       config.host = @host
-      config.environment = 'production'
+      config.environment = @config['environment'] || 'production'
     end
 
     Rollbar.error(message)

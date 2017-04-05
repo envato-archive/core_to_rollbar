@@ -14,6 +14,7 @@ RSpec.describe CoreToRollbar do
   let(:args) { [pid, uid, host, signal, time, executable, soft_limit, initial_pid] }
 
   let(:access_key) { 'access_key' }
+  let(:environment) { 'env' }
 
   let(:config_file) { double('config file') }
 
@@ -24,7 +25,7 @@ RSpec.describe CoreToRollbar do
     allow(Rollbar).to receive(:configure)
     allow(Rollbar).to receive(:error)
     allow(File).to receive(:open) { |&block| block.call(config_file) }
-    allow(config_file).to receive(:read) { "access_token: #{access_key}" }
+    allow(config_file).to receive(:read) { "access_token: #{access_key}\nenvironment: #{environment}" }
   end
 
   describe 'rollbar forwarding' do
@@ -35,9 +36,17 @@ RSpec.describe CoreToRollbar do
         expect(Rollbar).to receive(:configure) { |&block| block.call(config) }
         expect(config).to receive(:access_token=).with(access_key)
         expect(config).to receive(:host=).with(host)
-        expect(config).to receive(:environment=)
-        ret = subject.run(args)
-        expect(ret).to be(true)
+        expect(config).to receive(:environment=).with(environment)
+        subject.run(args)
+      end
+
+      it 'has default environment' do
+        expect(Rollbar).to receive(:configure) { |&block| block.call(config) }
+        allow(config_file).to receive(:read) { "access_token: #{access_key}" }
+        expect(config).to receive(:access_token=)
+        expect(config).to receive(:host=)
+        expect(config).to receive(:environment=).with('production')
+        subject.run(args)
       end
 
       it 'reports error' do
