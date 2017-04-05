@@ -44,7 +44,7 @@ RSpec.describe CoreToRollbar do
         expect(Rollbar).to receive(:error).with(/Process.*#{pid}.*#{uid}.*#{signal}/)
         subject.run(args)
       end
-      
+
       it 'reports true' do
         ret = subject.run(args)
         expect(ret).to be(true)
@@ -58,7 +58,8 @@ RSpec.describe CoreToRollbar do
 
       it 'prints failure to syslog' do
         expect(Syslog).to receive(:log).ordered
-        expect(Syslog).to receive(:log).ordered.with(Syslog::LOG_CRIT, /rollbar/)
+        expect(Syslog).to receive(:log).ordered.with(Syslog::LOG_CRIT,
+                                                     /rollbar/)
         subject.run(args)
       end
 
@@ -89,10 +90,11 @@ RSpec.describe CoreToRollbar do
 
       it 'prints to syslog' do
         expect(Syslog).to receive(:log).ordered
-        expect(Syslog).to receive(:log).ordered.with(Syslog::LOG_CRIT, /apport/)
+        expect(Syslog).to receive(:log).ordered.with(Syslog::LOG_CRIT,
+                                                     /apport/)
         subject.run(args)
       end
-      
+
       it 'returns false' do
         ret = subject.run(args)
         expect(ret).to be(false)

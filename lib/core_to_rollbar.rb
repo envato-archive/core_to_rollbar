@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'date'
 require 'etc'
 require 'rollbar'
 require 'syslog/logger'
 require 'yaml'
 
-APPORT_LOCATION = '/usr/share/apport/apport'
-CONFIG_FILE = '/etc/core_to_rollbar.yaml'
+APPORT_LOCATION = '/usr/share/apport/apport'.freeze
+CONFIG_FILE = '/etc/core_to_rollbar.yaml'.freeze
 
 class CoreToRollbar
   def run(args)
@@ -29,7 +31,7 @@ class CoreToRollbar
       Syslog.log(Syslog::LOG_CRIT, "Could not report the crash to apport: #{e}")
       failed = true
     end
-    
+
     !failed
   end
 
@@ -38,11 +40,11 @@ class CoreToRollbar
   def forward_to_rollbar
     read_config
 
-    executable_fixed = @executable.gsub('!', '/')
+    executable_fixed = @executable.tr('!', '/')
     time_fixed = DateTime.strptime(@time, '%s')
 
     message = "Process #{executable_fixed} [#{@pid}] running as uid #{@uid} on #{@host} crashed on signal #{@signal} at #{time_fixed}"
-    
+
     report_crash(message)
   end
 
@@ -52,7 +54,7 @@ class CoreToRollbar
 
   def read_config
     File.open(CONFIG_FILE) do |file|
-      @config = YAML.load(file.read)
+      @config = YAML.safe_load(file.read)
     end
   end
 
