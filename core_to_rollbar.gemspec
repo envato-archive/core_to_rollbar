@@ -5,6 +5,7 @@ Gem::Specification.new do |s|
   s.authors     = ['Stan Pitucha']
   s.email       = 'stan.pitucha@envato.com'
   s.files       = ['lib/core_to_rollbar.rb']
+  s.license     = 'MIT'
   s.executables << 'core_to_rollbar'
   s.add_runtime_dependency 'rollbar'
 end
