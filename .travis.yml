@@ -2,5 +2,5 @@ language: ruby
 rvm:
   - 2.2
   - ruby-head
-  - 1.9.3p484
+  - ruby-1.9.3-p484
 script: rspec spec
