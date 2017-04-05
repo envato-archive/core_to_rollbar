@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/core_to_rollbar'
+
+CoreToRollbar.new.run(ARGV) || abort
