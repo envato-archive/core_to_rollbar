@@ -6,6 +6,7 @@ The system requires configuration for this to work. First, the Rollbar token
 needs to be stored in `/etc/core_to_rollbar.yml`:
 ```
 access_token: "the_token"
+environment: "production"
 ```
 
 Next, the system needs to notify the application every time a program crashes.
